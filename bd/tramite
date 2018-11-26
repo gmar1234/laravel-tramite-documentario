@@ -1,0 +1,194 @@
+/*
+SQLyog Community v12.5.0 (64 bit)
+MySQL - 10.1.30-MariaDB : Database - tramite
+*********************************************************************
+*/
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`tramite` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+USE `tramite`;
+
+/*Table structure for table `areas` */
+
+DROP TABLE IF EXISTS `areas`;
+
+CREATE TABLE `areas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) DEFAULT NULL,
+  `descripcion` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+/*Data for the table `areas` */
+
+LOCK TABLES `areas` WRITE;
+
+insert  into `areas`(`id`,`nombre`,`descripcion`) values 
+(1,'RRHH','Area de recursos humanos'),
+(2,'AREA DE INFORMATICA','NUEVO TRAMITE'),
+(3,'AREA DE EJEMPLO','SSSS'),
+(4,'AREA DE  GESTION PUBLICA','ESTA ES LA AREA DE GESTION PUBLICA'),
+(5,'ARE DE MD','ARE DE MD PAR APODER REALIZAR SUS EJMPLEOS'),
+(6,'AREA DE COMPUTACION','COMPUTADORAS'),
+(7,'EJEMPLO','AREASSS');
+
+UNLOCK TABLES;
+
+/*Table structure for table `documento` */
+
+DROP TABLE IF EXISTS `documento`;
+
+CREATE TABLE `documento` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(45) DEFAULT NULL,
+  `asunto` varchar(45) DEFAULT NULL,
+  `descipcion` varchar(200) DEFAULT NULL,
+  `imagen` varchar(45) DEFAULT NULL,
+  `persona_id` int(11) NOT NULL,
+  `areas_id` int(11) NOT NULL,
+  `estado` int(1) DEFAULT NULL,
+  `visto` int(1) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_documento_persona_idx` (`persona_id`),
+  KEY `fk_documento_areas1_idx` (`areas_id`),
+  CONSTRAINT `fk_documento_areas1` FOREIGN KEY (`areas_id`) REFERENCES `areas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_documento_persona` FOREIGN KEY (`persona_id`) REFERENCES `persona` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+/*Data for the table `documento` */
+
+LOCK TABLES `documento` WRITE;
+
+insert  into `documento`(`id`,`codigo`,`asunto`,`descipcion`,`imagen`,`persona_id`,`areas_id`,`estado`,`visto`,`created_at`,`updated_at`) values 
+(7,'15-AS','DOCUMENTO','ESTO ES UNA PRUEBA DE DOCUEMTNO','1543187322.png',24,1,0,1,'2018-11-25 18:08:43','2018-11-25 18:11:23'),
+(8,'COD  - 150','EJEMPLO','EJEMPLO','1543191086.png',25,2,2,1,'2018-11-25 19:11:26','2018-11-25 19:14:36'),
+(11,'COD - 25','EJEMPLO ','EJMPLO','1543191086.png',25,6,0,1,NULL,NULL),
+(12,'(NULL)OD - 42','OTRO','OTR','1543191086.png',25,7,1,1,NULL,NULL);
+
+UNLOCK TABLES;
+
+/*Table structure for table `migrations` */
+
+DROP TABLE IF EXISTS `migrations`;
+
+CREATE TABLE `migrations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table `migrations` */
+
+LOCK TABLES `migrations` WRITE;
+
+UNLOCK TABLES;
+
+/*Table structure for table `movimiento` */
+
+DROP TABLE IF EXISTS `movimiento`;
+
+CREATE TABLE `movimiento` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `area_salida` varchar(45) DEFAULT NULL,
+  `area_entrada` varchar(45) DEFAULT NULL,
+  `documento_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_movimiento_documento1_idx` (`documento_id`),
+  CONSTRAINT `fk_movimiento_documento1` FOREIGN KEY (`documento_id`) REFERENCES `documento` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+/*Data for the table `movimiento` */
+
+LOCK TABLES `movimiento` WRITE;
+
+insert  into `movimiento`(`id`,`area_salida`,`area_entrada`,`documento_id`,`created_at`,`updated_at`) values 
+(10,'AREA DE INFORMATICA','RRHH',7,'2018-11-25 18:10:17','2018-11-25 18:10:17'),
+(11,'RRHH','AREA DE INFORMATICA',8,'2018-11-25 19:11:42','2018-11-25 19:11:42');
+
+UNLOCK TABLES;
+
+/*Table structure for table `password_resets` */
+
+DROP TABLE IF EXISTS `password_resets`;
+
+CREATE TABLE `password_resets` (
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  KEY `password_resets_email_index` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table `password_resets` */
+
+LOCK TABLES `password_resets` WRITE;
+
+UNLOCK TABLES;
+
+/*Table structure for table `persona` */
+
+DROP TABLE IF EXISTS `persona`;
+
+CREATE TABLE `persona` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `dni` varchar(45) DEFAULT NULL,
+  `nombres` varchar(45) DEFAULT NULL,
+  `apellidos` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+
+/*Data for the table `persona` */
+
+LOCK TABLES `persona` WRITE;
+
+insert  into `persona`(`id`,`dni`,`nombres`,`apellidos`) values 
+(24,'72114258','GIAN MARCO','ALBORNOZ'),
+(25,'12345678','JUAN','CAMPOS');
+
+UNLOCK TABLES;
+
+/*Table structure for table `users` */
+
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `areas_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`),
+  KEY `fk_users_areas_idx` (`areas_id`),
+  CONSTRAINT `fk_users_areas` FOREIGN KEY (`areas_id`) REFERENCES `areas` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table `users` */
+
+LOCK TABLES `users` WRITE;
+
+insert  into `users`(`id`,`name`,`email`,`password`,`remember_token`,`created_at`,`updated_at`,`areas_id`) values 
+(3,'Gian marco Albornoz rimas','albornozrimas123@gmail.com','$2y$10$zYbkIe23dCCEGIRKE182VuUiCHai/7zRSIvy8tqmXw2Y5UsqfJ0k2','H4lmwbPuH8kuTLPSCD60ULj5MQuPhMoSTHgaAzePoGS01arkdOIHIGiWef1v','2018-11-18 12:18:44','2018-11-18 12:18:44',1),
+(8,'adler albornoz','albornoznegocio@gmail.com','$2y$10$GGnQJUDx2Z6cLtuIWIUoh.YWOfbNkQ79yswixvn6185UgSpQqK60.','Wh34qyoQufXcZQWdYySMt558R4UBkGO13gRA7ZqJyVQNIrtgLrh5FxnI1f8d','2018-11-24 14:34:35','2018-11-24 14:34:35',2);
+
+UNLOCK TABLES;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
