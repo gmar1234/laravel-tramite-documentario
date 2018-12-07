@@ -96,6 +96,33 @@
                         </ul>
                       </li>
 
+                      <li class="dropdown user user-menu">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <img src="/img/avatar/{{auth()->user()->imagen}}" class="user-image" alt="Imagen de Usuario">
+                            <span class="hidden-xs">{{auth()->user()->name}}</span>
+                          </a>
+                          <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                              <img src="/img/avatar/{{auth()->user()->imagen}}" class="img-circle" alt="Imagen de Usuario">
+                              <p>
+                                {{auth()->user()->name}}
+                                <small>Fecha de registro {{auth()->user()->created_at}}</small>
+                              </p>
+                            </li>
+
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                              <div class="pull-left">
+                                <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                              </div>
+                              <div class="pull-right">
+                                <a href="{{ url(config('adminlte.logout_url', 'auth/logout')) }}" class="btn btn-default btn-flat">Salir</a>
+                              </div>
+                            </li>
+                          </ul>
+                        </li>
+
                         <li>
                             @if(config('adminlte.logout_method') == 'GET' || !config('adminlte.logout_method') && version_compare(\Illuminate\Foundation\Application::VERSION, '5.3.0', '<'))
                                 <a href="{{ url(config('adminlte.logout_url', 'auth/logout')) }}">

@@ -27,6 +27,7 @@
           <th>#</th>
           <th>NOMBRE AREA</th>
           <th>AREA DESCRIPCION</th>
+          <th>ACCIONES</th>
         </tr>
         </thead>
         <tbody style="font-weight: 500;">
@@ -63,7 +64,8 @@
                 columns: [
                     {data: 'id'},
                     {data: 'nombre'},
-                    {data: 'descripcion'}
+                    {data: 'descripcion'},
+                    { data: 'action'}
                 ]
             });
 

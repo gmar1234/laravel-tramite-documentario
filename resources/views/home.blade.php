@@ -15,8 +15,9 @@
     $doc_archivado = 0;
     $doc_total =0;
     $doc_finalizado=0;
-    foreach ($documento as $doc) {
 
+
+    foreach ($documento as $doc) {
         $doc_total++;
         if($doc->estado == '0'){
           $doc_activo++;
@@ -28,7 +29,9 @@
           $doc_archivado++;
         }
     }
-   ?>
+
+
+?>
   <div class="row">
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
@@ -141,7 +144,13 @@
                 <!-- /.col -->
                 <div class="col-sm-3 col-xs-6">
                   <div class="description-block border-right">
-                    <span class="description-percentage text-green"><i class="fa fa-caret-left"></i>{{$doc_activo*100/$doc_total}}%%</span>
+                    <span class="description-percentage text-green"><i class="fa fa-caret-left"></i>
+                      @if ($doc_activo>0)
+                        {{$doc_activo*100/$doc_total}}
+                      @else
+                        <?php echo "0"; ?>
+                      @endif
+                      %%</span>
                     <h5 class="description-header">{{$doc_activo}}</h5>
                     <span class="description-text">ACTIVOS</span>
                   </div>
@@ -150,7 +159,14 @@
                 <!-- /.col -->
                 <div class="col-sm-3 col-xs-6">
                   <div class="description-block border-right">
-                    <span class="description-percentage text-yellow"><i class="fa fa-caret-up"></i>{{$doc_archivado*100/$doc_total}}%%</span>
+                    <span class="description-percentage text-yellow"><i class="fa fa-caret-up"></i>
+
+                      @if ($doc_archivado>0)
+                        {{$doc_archivado*100/$doc_total}}
+                      @else
+                        <?php echo "0"; ?>
+                      @endif
+                      %%</span>
                     <h5 class="description-header">{{$doc_archivado}}</h5>
                     <span class="description-text">ARCHIVADO</span>
                   </div>
@@ -159,7 +175,14 @@
                 <!-- /.col -->
                 <div class="col-sm-3 col-xs-6">
                   <div class="description-block">
-                    <span class="description-percentage text-red"><i class="fa fa-caret-down"></i>{{$doc_finalizado*100/$doc_total}}%</span>
+                    <span class="description-percentage text-red"><i class="fa fa-caret-down"></i>
+
+                      @if ($doc_finalizado>0)
+                        {{$doc_finalizado*100/$doc_total}}
+                      @else
+                        <?php echo "0"; ?>
+                      @endif
+                      %</span>
                     <h5 class="description-header">{{$doc_finalizado}}</h5>
                     <span class="description-text">FINALIZADO</span>
                   </div>
@@ -174,9 +197,6 @@
         </div>
 
 @stop
-
-
-
 
 @section('js')
           <script src="{{ asset('js/Chart.js')}}"></script>

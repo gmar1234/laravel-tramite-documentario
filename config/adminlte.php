@@ -140,6 +140,14 @@ return [
             'icon_color' => 'red',
             'icon' => 'user',
         ],
+
+        'REPORTES',
+        [
+            'text'  => 'Reportes',
+             'url'  => 'usuarios',
+            'icon_color' => 'red',
+            'icon' => 'fa fa-user',
+        ],
     ],
 
     /*
