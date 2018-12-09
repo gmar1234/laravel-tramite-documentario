@@ -71,13 +71,27 @@
               <div class="row">
 
                 <div class="col-md-12">
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">FOLIO</label>
-                    <div class="input-group">
-                  <span class="input-group-addon">COD</span>
-                  <input type="text" onkeyup="javascript:this.value=this.value.toUpperCase();"  class="form-control"  id="codigo" name="codigo" required>
-                </div>
-                  </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">PRIORIDAD</label>
+                        <select class="form-control" name="prioridad">
+                          <option>seleccione..</option>
+                            <option value="0">ALTO</option>
+                            <option value="1">MEDIO</option>
+                            <option value="2">BAJO</option>
+                        </select>
+                      </div>
+
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">FOLIO</label>
+                        <div class="input-group">
+                      <span class="input-group-addon">COD</span>
+                      <input type="text" onkeyup="javascript:this.value=this.value.toUpperCase();"  class="form-control"  id="codigo" name="codigo" required>
+                    </div>
+                      </div>
+                    </div>
                 </div>
 
                 <div class="col-md-12">

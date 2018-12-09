@@ -17,8 +17,8 @@
       "nesbot/carbon": "^1.33",
       "yajra/laravel-datatables-oracle": "~8.0",
       "infyomlabs/laravel-generator": "5.5.x-dev",
-      "laravelcollective/html": "^5.5.0",
-      "infyomlabs/adminlte-templates": "5.5.x-dev"
+      "infyomlabs/adminlte-templates": "5.5.x-dev",
+      "mews/captcha": "^2.2"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
@@ -64,5 +64,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

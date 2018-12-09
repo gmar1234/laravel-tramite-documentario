@@ -7,7 +7,15 @@
   <link href="{{ asset('css/sweetalert2.min.css') }}" rel="stylesheet">
 @stop
 @section('content_header')
-  <a class="btn btn-block  btn-tramite" href="{{ route('documentos.create')}}" style="width: 20%;margin: 15px 0px 8px 0px;">NUEVO TRAMITE</a>
+
+  @if (auth()->user()->tipo == 2)
+    <a class="btn btn-block  btn-tramite" href="{{ route('documentos.create')}}" style="width: 20%;margin: 15px 0px 8px 0px;">NUEVO TRAMITE</a>
+  @else
+    <h1>
+            LISTA DE TRAMITES
+            <small>{{auth()->user()->area->nombre}}</small>
+          </h1>
+  @endif
 @stop
 
 @section('content')
@@ -24,11 +32,11 @@
           <thead>
           <tr>
             <th>#</th>
-            <th>DOCUMENTO</th>
-            <th>NOMBRE</th>
+            <th>CODIGO</th>
+            <th>INTERESADO</th>
             <th>FOLIO</th>
-            <th>ASUNTO</th>
             <th>ESTADO</th>
+            <th>PRIORIDAD</th>
             <th>IMAGEN</th>
             <th>ACCIONES</th>
           </tr>
@@ -36,11 +44,10 @@
           <tbody style="font-weight: 500;">
                   @foreach($documento as $doc)
                   <tr>
-                      <td> {{$doc->id}}</td>
-                      <td class="vertical-td">{{ $doc->persona->dni }}</td>
+                      <td> <center><p>{{$doc->id}}</p></center></td>
+                      <td class="vertical-td">{{ $doc->codigo_busc }}</td>
                       <td class="vertical-td" id="nom{{$doc->id}}">{{ $doc->persona->nombres }} {{ $doc->persona->apellidos }} </td>
                       <td class="vertical-td" id="cod{{$doc->id}}" >{{ $doc->codigo }}</td>
-                      <td class="vertical-td">{{ $doc->asunto }}</td>
                       <td class="vertical-td" id="estado{{$doc->estado}}">
                           @if ($doc->estado == '0')
                             <p><small class="label bg-green">PROCESO</small></p>
@@ -51,12 +58,30 @@
                           @endif
 
                       </td>
+
+                      <td class="vertical-td" id="estado{{$doc->prioridad}}">
+                          @if ($doc->prioridad == '0')
+                            <center><p><small class="label bg-red">ALTO</small></p></center>
+
+                          @elseif ($doc->prioridad == '1')
+                            <center><p><small class="label bg-yellow">MEDIO</small></p></center>
+
+                          @elseif ($doc->prioridad == '2')
+                            <center><p><small class="label bg-green">BAJO</small></p></center>
+
+                          @endif
+
+                      </td>
+
+
                       <td class="vertical-td"> <center><img src="/uploads/{{ $doc->imagen}}" alt="" width="120" height="80" ></center> </td>
                       <td class="vertical-td">
                       <a class="btn btn-negro btn-xs dt-edit" href="{{route('documentos.detallesindex',[$doc->id])}}" data-toggle="tooltip" data-placement="left" data-original-title="Detalles" ><i class="fa fa-fw fa-eye"></i></a>
-                      <a class="btn btn-negro btn-xs dt-edit" onclick="AbrirModalEnviar({{$doc->id}});" data-toggle="tooltip" data-placement="left" data-original-title="Enviar" ><i class="fa fa-fw fa-file-pdf-o"></i></a>
-                      <a class="btn btn-negro btn-xs dt-edit" onclick="AbrirModalEstado({{$doc->id}});"  data-toggle="tooltip" data-placement="left" data-original-title="Estado" ><i class="fa fa-fw  fa-tags"></i></a>
-
+                      @if ($doc->areas_id == auth()->user()->areas_id)
+                        <a class="btn btn-negro btn-xs dt-edit" onclick="AbrirModalEnviar({{$doc->id}});" data-toggle="tooltip" data-placement="left" data-original-title="Derivar a area" ><i class="fa fa-fw fa-file-pdf-o"></i></a>
+                        <a class="btn btn-negro btn-xs dt-edit" onclick="AbrirModalEstado({{$doc->id}});"  data-toggle="tooltip" data-placement="left" data-original-title="Estado" ><i class="fa fa-fw  fa-tags"></i></a>
+                        <a href="{{route('pdf.seguimiento',[$doc->id])}}" class="btn btn-negro btn-xs dt-edit"  data-toggle="tooltip" data-placement="left" data-original-title="Hoja de ruta" ><i class="fa fa-fw  fa-download"></i></a>
+                      @endif
                      </td>
                   </tr>
                   @endforeach
@@ -79,10 +104,10 @@
 
         @if(session()->has('registro'))
         swal({
-            title: 'Exitoso!',
-            text: "se registro el usuario",
+            title: 'REGISTRO CORRECTO',
+            text: '{{Session::get('registro')}}',
             type: 'success',
-            timer: '1500'
+            timer: '5500'
         })
         @endif
 

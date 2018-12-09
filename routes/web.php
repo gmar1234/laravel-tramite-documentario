@@ -20,11 +20,16 @@
     Route::resource('documentos','DocumentoController');
     Route::resource('consultar','BusquedaController');
     Route::resource('usuarios','UsuariosController');
+    Route::get('user/detallesindex/{id}', 'UsuariosController@show')->name('user.detallesindex');
+    Route::post('profile', 'UsuariosController@update_avatar');
+
+    Route::post('home/clave/storeClave', 'HomeController@storeClave')->name('home.storeClave');
+
     Route::post('enviarDocumento','DocumentoController@enviar')->name('enviarDocumento');
     Route::post('cambiarEstado','DocumentoController@estado')->name('cambiarEstado');
     Route::get('documento/detalleindex/{id}', 'DocumentoController@notificacion')->name('documento.detalleindex');
     Route::get('documentos.nuevo', array('as' => 'autocompletesPersona', 'uses' => 'DocumentoController@autocompletesPersona'));
-
+    Route::get('pdf/diario/{id}','DocumentoController@pdf')->name('pdf.seguimiento');
 
     Route::get('detallesitem/{id}', 'BusquedaController@detalles')->name('detallesitem');
     Route::get('documentos/detallesindex/{id}', 'DocumentoController@show')->name('documentos.detallesindex');

@@ -17,7 +17,6 @@
 @section('body')
     <div class="wrapper">
 
-        <!-- Main Header -->
         <header class="main-header">
             @if(config('adminlte.layout') == 'top-nav')
             <nav class="navbar navbar-static-top">
@@ -114,7 +113,7 @@
                             <!-- Menu Footer-->
                             <li class="user-footer">
                               <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                                <a href="{{route('user.detallesindex',[Auth::user()->id])}}" class="btn btn-default btn-flat">Perfil</a>
                               </div>
                               <div class="pull-right">
                                 <a href="{{ url(config('adminlte.logout_url', 'auth/logout')) }}" class="btn btn-default btn-flat">Salir</a>

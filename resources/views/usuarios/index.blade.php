@@ -28,6 +28,8 @@
           <th>NOMBRE</th>
           <th>EMAIL</th>
           <th>AREA</th>
+          <th>IMAGEN</th>
+          <th>ACCION</th>
         </tr>
         </thead>
         <tbody style="font-weight: 500;">
@@ -37,6 +39,14 @@
                     <td class="vertical-td">{{ $doc->name }}</td>
                     <td class="vertical-td">{{ $doc->email}}</td>
                     <td class="vertical-td">{{ $doc->area->nombre }}</td>
+                    <td class="vertical-td"> <center><img src="/img/avatar/{{ $doc->imagen}}" alt="" width="120" height="80" ></center> </td>
+                    <td>
+                      <a class="btn btn-negro btn-xs dt-edit" href="{{route('user.detallesindex',[$doc->id])}}" data-toggle="tooltip" data-placement="left" data-original-title="Detalles" ><i class="fa fa-fw fa-eye"></i></a>
+                      <a class="btn btn-negro btn-xs dt-edit" onclick="AbrirModalEnviar({{$doc->id}});" data-toggle="tooltip" data-placement="left" data-original-title="Enviar" ><i class="fa fa-fw fa-file-pdf-o"></i></a>
+                      <a class="btn btn-negro btn-xs dt-edit" onclick="AbrirModalEstado({{$doc->id}});"  data-toggle="tooltip" data-placement="left" data-original-title="Estado" ><i class="fa fa-fw  fa-tags"></i></a>
+
+
+                    </td>
                 </tr>
                 @endforeach
         </tbody>
@@ -200,11 +210,44 @@ function cerrar(){
 
         function AbrirModalAgregar(){
             $('#agregar-md').modal('show');
-            $('.modal-title').text('AGREGAR CATEGORIA');
-            $("#agregarCategoria").text('AGREGAR CATEGORIA');
             limpiar();
 
         }
+
+
+
+                $('.select_bottom').click(function(){
+                    $('.filefield').trigger('click');
+                });
+
+                $('.filefield').change(function(){
+                    if($(this).val()!=''){
+                    $('.overlay_uploader').show();
+                    $('.spinner').show();
+                    readURL2(this);
+                    }
+                });
+
+                function readURL2(input) {
+                    if(input.files[0].type=='image/jpeg' || input.files[0].type=='image/png') {
+                        $.each(jQuery(input)[0].files, function (i, file) {
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                              $('.overlay_uploader').hide();
+                              $('.spinner').hide();
+                              $('.box-img').css('background-image','url('+ e.target.result+')');
+                            }
+                            reader.readAsDataURL(input.files[0]);
+                        });
+                    }else{
+                        $('.overlay_uploader').hide();
+                        $('.spinner').hide();
+                        alert("Solo se permiten archivos .jpg y .png");
+                    }
+                }
+
+
+
 
         function editarForm(id) {
              $("#id_user").val(id);

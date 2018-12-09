@@ -8,6 +8,8 @@ use App\Persona;
 use App\Movimiento;
 use Image;
 use Session;
+use Jenssegers\Date\Date;
+use Barryvdh\DomPDF\Facade as PDF;
 use App\Areas;
 
 class DocumentoController extends Controller
@@ -19,7 +21,11 @@ class DocumentoController extends Controller
      */
     public function index()
     {
-      $documento = Documento::where('areas_id',auth()->user()->areas_id)->get();
+      if(auth()->user()->areas_id == 8 ){
+        $documento = Documento::all();
+      }else {
+        $documento = Documento::where('areas_id',auth()->user()->areas_id)->get();
+      }
       $areas = Areas::all();
       return view('documentos.index',compact('documento','areas'));
     }
@@ -51,11 +57,17 @@ class DocumentoController extends Controller
     $persona = Persona::all()->last();
     $id_persona=$persona->id;
 
+    $doc = Documento::all()->last();
+    $id_doc=$doc->id;
+    $sum=$id_doc+1;
+    $codigo_env = "COD 000".$sum;
     $documento =  new Documento;
     $documento ->codigo =$request->codigo;
     $documento ->asunto =$request->asunto;
     $documento ->estado ='0';
     $documento ->visto =1;
+    $documento ->prioridad =$request->prioridad;
+    $documento ->codigo_busc =$codigo_env;
     $documento ->descipcion =$request->descripcion;
 
     if($request->hasfile('file')){
@@ -69,8 +81,9 @@ class DocumentoController extends Controller
     $documento ->persona_id =$id_persona;
     $documento ->areas_id =  auth()->user()->areas_id;
     $documento->save();
-    Session::flash('registro','Se registro empeño');
+    Session::flash('registro','Codigo de registro: '.$codigo_env);
     return redirect()->action('DocumentoController@index');
+
     }
 
     /**
@@ -170,4 +183,15 @@ class DocumentoController extends Controller
         return \Response::json($result);;
 
     }
+
+    public function pdf($id){
+
+    $per = Documento::find($id);
+    $persona = Persona :: find($per->persona_id);
+    $doc = Movimiento::where('documento_id',$id)->get();
+    $fecha = Date::now()->format('l j F Y');
+    $pdf = PDF::loadView('pdf.seguimiento', compact('doc','fecha','persona','per'));
+    return $pdf->download('tramite.pdf');
+
+  }
 }

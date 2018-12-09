@@ -35,7 +35,7 @@ class Documento extends Model
     /**
      * @var array
      */
-    protected $fillable = ['persona_id', 'areas_id', 'codigo', 'asunto','estado','visto', 'descipcion', 'imagen'];
+    protected $fillable = ['persona_id', 'areas_id', 'codigo', 'asunto','estado','visto','prioridad', 'descipcion', 'imagen'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

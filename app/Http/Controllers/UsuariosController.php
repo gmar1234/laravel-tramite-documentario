@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Areas;
+use Auth;
+use Image;
 
 class UsuariosController extends Controller
 {
@@ -39,6 +41,7 @@ class UsuariosController extends Controller
      */
     public function store(Request $request)
     {
+
       $user = User::find($request->id_user);
       if(!$user){
           $user = new User;
@@ -46,7 +49,16 @@ class UsuariosController extends Controller
       $user->name = $request->name;
       $user->email = $request->email;
       $user->areas_id = $request->area;
+      $user->tipo = $request->tipo;
       $user->password =bcrypt($request->password);
+      if($request->hasfile('file')){
+            $avatar = $request->file('file');
+            $filename =  time() . '.' .$avatar->getClientOriginalExtension();
+            Image::make($avatar)->resize(500,500)->save(public_path('img/avatar/'.$filename));
+            $user->imagen = $filename;
+      }else{
+            $user->imagen = 'default.jpg';
+      }
       $user->save();
 
         return response(['msg' => 'Se agrego usuarios', 'status' => 'success']);
@@ -60,8 +72,28 @@ class UsuariosController extends Controller
      */
     public function show($id)
     {
-        //
+      $usuario = User::find($id);
+      return view('usuarios.perfil',compact('usuario'));
+
     }
+
+
+    public function update_avatar(Request $request)
+    {
+
+        if ($request->hasFile('imagen')) {
+            $user = User::find(Auth::user()->id);
+            $imagen = $request->file('imagen');
+            $filename = time() . '.' . $imagen->getClientOriginalExtension();
+            Image::make($imagen)->resize(160, 160)->save(public_path('/img/avatar/' . $filename));
+            $user = Auth::user();
+            $user->imagen = $filename;
+            $user->save();
+        }
+
+        return redirect('home');
+    }
+
 
     /**
      * Show the form for editing the specified resource.
